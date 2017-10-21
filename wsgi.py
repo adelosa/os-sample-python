@@ -16,7 +16,7 @@ class HelloTable(Base):
 
 app = Flask(__name__)
 db_url = 'postgresql://{user}:{pwd}@{host}/{db}'.format(host=os.environ['POSTGRESQL_SERVICE_HOST'], user=os.environ['DB_USER'], pwd=os.environ['DB_PASS'], db='hellodb')
-app.engine = create_engine(os.environ.get(db_url), echo=True)
+app.engine = create_engine(db_url, echo=True)
 Base.metadata.create_all(bind=app.engine)
 
 app.db_session = scoped_session(
