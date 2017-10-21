@@ -14,20 +14,20 @@ class HelloTable(Base):
     greeting = Column(String, primary_key=True)
 
 
-app = Flask(__name__)
+application = Flask(__name__)
 db_url = 'postgresql://{user}:{pwd}@{host}/{db}'.format(host=os.environ['POSTGRESQL_SERVICE_HOST'], user=os.environ['DB_USER'], pwd=os.environ['DB_PASS'], db='hellodb')
-app.engine = create_engine(db_url, echo=True)
-Base.metadata.create_all(bind=app.engine)
+application.engine = create_engine(db_url, echo=True)
+Base.metadata.create_all(bind=application.engine)
 
-app.db_session = scoped_session(
-    sessionmaker(autocommit=False, autoflush=False, bind=app.engine))
-Base.query = app.db_session.query_property()
+application.db_session = scoped_session(
+    sessionmaker(autocommit=False, autoflush=False, bind=application.engine))
+Base.query = application.db_session.query_property()
 
 
-@app.route("/")
+@application.route("/")
 def hello():
     return "Hello World!"
 
 
 if __name__ == "__main__":
-    app.run()
+    application.run()
